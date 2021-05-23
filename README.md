@@ -24,7 +24,7 @@ is used.
 # Results
 ![Alt Text](https://github.com/tameraktekin/ObjectTracking/blob/main/test/test_output.gif)
 # Drawbacks
-Using Euclidean distance to track objects has to major drawbacks.
+Using Euclidean distance to track objects has two major drawbacks.
   - First, object detector must be run for each frame which is time consuming.
   - Second, overlapping objects can change ids resulting for tracker to track wrong objects.
   
