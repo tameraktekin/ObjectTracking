@@ -12,6 +12,10 @@ SOURCE = config.get('data', 'test_folder') + config.get('data', 'test_video')
 WIDTH = config.getint('data', 'width')
 HEIGHT = config.getint('data', 'height')
 
+SAVE_VIDEO = config.getboolean('test', 'save_video')
+OUTPUT_FILE = config.get('data', 'test_folder') + config.get('test', 'output_file')
+OUTPUT_FPS = config.getint('test', 'output_fps')
+
 
 def main():
     model = cv2.dnn.readNetFromCaffe(MODEL_PROTO_NAME, MODEL_NAME)
@@ -19,6 +23,9 @@ def main():
     tracker = Tracker()
 
     cap = cv2.VideoCapture(SOURCE)
+
+    if SAVE_VIDEO:
+        video_writer = cv2.VideoWriter(OUTPUT_FILE, cv2.VideoWriter_fourcc(*'MJPG'), OUTPUT_FPS, (WIDTH, HEIGHT))
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -52,9 +59,16 @@ def main():
 
             cv2.imshow("Frame", frame)
 
+            if SAVE_VIDEO:
+                video_writer.write(frame)
+
         key = cv2.waitKey(10)
         if key == ord('q'):
             break
+
+    cap.release()
+    if SAVE_VIDEO:
+        video_writer.release()
 
 
 if __name__ == '__main__':
